@@ -127,6 +127,24 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col cols="12" xs="6" sm="6" md="6" lg="6">
+        <v-lazy>
+          <TotalBarChart
+            :title="$t('chart_titles.total_by_age_and_gender')"
+            :horizontal="true"
+            :stacked="true"
+            :showDataLabel="false"
+            :series="getTotalByAgeGenderSeries.series"
+            :labels="getTotalByAgeGenderSeries.labels"
+            :labelFormatter="getTotalByAgeGenderSeries.formatter"
+            :colors="getTotalByAgeGenderSeries.colors"
+            :grid="getTotalByAgeGenderSeries.grid"
+            :tooltip="getTotalByAgeGenderSeries.tooltip"
+          />
+        </v-lazy>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12">
         <v-lazy>
           <HourlyCasesLineChart :chartdata="getHourlyLiveStats" />
@@ -366,6 +384,101 @@ export default {
         ]
       };
     },
+    getTotalByAgeGenderSeries() {
+      return {
+        series: [
+          {
+            name: "Males",
+            data: [
+              -4.2,
+              -4,
+              -4.3,
+              -4.1,
+              -4.2,
+              -4.5,
+              -3.9,
+              -3.9,
+              -3.8,
+              -3.5,
+              -3,
+              -2.1,
+              -2.9,
+              -0.4,
+              -0.65,
+              -0.76,
+              -0.88,
+              -1.5,
+            ],
+          },
+          {
+            name: "Females",
+            data: [
+              3.9,
+              3.8,
+              3.8,
+              3.5,
+              3.2,
+              3,
+              2.9,
+              2.5,
+              2.4,
+              2.5,
+              2,
+              1.9,
+              1.9,
+              0.4,
+              0.65,
+              0.76,
+              0.88,
+              1.5,
+            ],
+          },
+        ],
+        labels: [
+          "85+",
+          "80-84",
+          "75-79",
+          "70-74",
+          "65-69",
+          "60-64",
+          "55-59",
+          "50-54",
+          "45-49",
+          "40-44",
+          "35-39",
+          "30-34",
+          "25-29",
+          "20-24",
+          "15-19",
+          "10-14",
+          "5-9",
+          "0-4",
+        ],
+        formatter: (val) => Math.abs(Math.round(val)) + "%",
+        grid: {
+          xaxis: {
+            lines: {
+              show: false,
+            },
+          },
+        },
+        colors: ["#008FFB", "#FF4560"],
+        tooltip: {
+          shared: false,
+          x: {
+            formatter: function (val) {
+              return val;
+            },
+          },
+          y: {
+            formatter: function (val) {
+              return Math.abs(val) + "%";
+            },
+          },
+        },
+      };
+    },
+
     getHourlyLiveStats() {
       const all = this.findStatStore;
       if (all && all.data && all.data.length > 0) {
